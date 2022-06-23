@@ -3,7 +3,7 @@ name: Cross-Version
 on:
   push:
     branches:
-      - main
+      - 2087-windows-build
       - 'releases/*'
   pull_request:
     branches:
@@ -11,9 +11,6 @@ on:
 
 env:
   ORG_GRADLE_PROJECT_enableTestDistribution: true
-  ORG_GRADLE_PROJECT_junitBuildCacheUsername: ${{ secrets.BUILD_CACHE_USERNAME }}
-  ORG_GRADLE_PROJECT_junitBuildCachePassword: ${{ secrets.BUILD_CACHE_PASSWORD }}
-  GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
 
 jobs:
   openjdk:
@@ -45,8 +42,3 @@ jobs:
             -PjavaToolchainVersion=${{ matrix.jdk }}
             -Dscan.tag.JDK_${{ matrix.jdk }}
             build
-      - name: Upload Test Distribution trace files
-        uses: actions/upload-artifact@v2
-        with:
-          name: Test Distribution trace files
-          path: '**/build/test-results/*/trace.json'
